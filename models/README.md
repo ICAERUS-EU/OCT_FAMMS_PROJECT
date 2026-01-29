@@ -20,17 +20,18 @@ This package contains complete implementations of two models for deforestation d
 | **[README.md](README.md)** | Model 1 documentation (Change Detection CNN) |
 | **[README_FOREST.md](README_FOREST.md)** | Model 2 documentation (Pattern Recognition RF) |
 
-### 🎯 Model 1: Change Detection CNN
+### 🎯 Model 1: Change Detection
 
 Detects WHERE deforestation occurred by comparing before/after images.
 
 | File | Level | Description |
 |------|-------|-------------|
-| **[simple_example.py](simple_example.py)** | ⭐ Beginner | Quick start - run this first! |
-| **[change_detection_cnn.py](change_detection_cnn.py)** | 🚀 Advanced | Full production implementation |
-| **[change_detection_tutorial.ipynb](change_detection_tutorial.ipynb)** | 📓 Interactive | Step-by-step Jupyter notebook |
+| **[run_change_detection.py](model_1/run_change_detection.py)** | 🔥 **EXECUTABLE** | Analizza immagini reali da CLI |
+| **[simple_example.py](model_1/simple_example.py)** | ⭐ Beginner | Quick start - run this first! |
+| **[change_detection_cnn.py](model_1/change_detection_cnn.py)** | 🚀 Advanced | Full CNN implementation (richiede TensorFlow) |
+| **[change_detection_tutorial.ipynb](model_1/change_detection_tutorial.ipynb)** | 📓 Interactive | Step-by-step Jupyter notebook |
 
-**Framework:** TensorFlow/Keras  
+**Framework:** NumPy/OpenCV/SciPy (run_change_detection.py) o TensorFlow/Keras (CNN)
 **Output:** Binary mask showing deforestation probability (0-1)
 
 ### 🌲 Model 2: Forest Pattern Recognition
@@ -39,38 +40,68 @@ Classifies areas by deforestation risk level (Low/Medium/High).
 
 | File | Level | Description |
 |------|-------|-------------|
-| **[simple_forest_example.py](simple_forest_example.py)** | ⭐ Beginner | Quick start - easiest entry point |
-| **[forest_pattern_classifier.py](forest_pattern_classifier.py)** | 🚀 Advanced | Full implementation with 40+ features |
-| **[forest_classifier_tutorial.ipynb](forest_classifier_tutorial.ipynb)** | 📓 Interactive | Complete tutorial with visualizations |
+| **[run_forest_classifier.py](model_2/run_forest_classifier.py)** | 🔥 **EXECUTABLE** | Analizza immagini reali da CLI |
+| **[simple_forest_example.py](model_2/simple_forest_example.py)** | ⭐ Beginner | Quick start - easiest entry point |
+| **[forest_pattern_classifier.py](model_2/forest_pattern_classifier.py)** | 🚀 Advanced | Full implementation with 40+ features |
+| **[forest_classifier_tutorial.ipynb](model_2/forest_classifier_tutorial.ipynb)** | 📓 Interactive | Complete tutorial with visualizations |
 
-**Framework:** Scikit-learn  
+**Framework:** Scikit-learn
 **Output:** Risk classification per grid cell (Low, Medium, High)
 
 ---
 
 ## 🚀 Quick Start Guide
 
+### NEW: Executable Scripts with Real Images
+
+I nuovi script permettono di analizzare **immagini reali** direttamente da riga di comando:
+
+```bash
+# Change Detection - confronta due immagini
+cd model_1
+python run_change_detection.py --demo                    # Demo con immagini DJI del progetto
+python run_change_detection.py --before img1.jpg --after img2.jpg  # Con immagini custom
+
+# Forest Risk Assessment - analizza una singola immagine
+cd model_2
+python run_forest_classifier.py --demo                   # Demo con immagini DJI del progetto
+python run_forest_classifier.py --image satellite.jpg   # Con immagine custom
+```
+
+**Requisiti:**
+```bash
+pip install numpy matplotlib opencv-python scipy scikit-learn Pillow
+```
+
+---
+
 ### Option 1: I want spatial precision (pixel-level detection)
 
 ```bash
-# Use Model 1: Change Detection CNN
-python simple_example.py
+# Use Model 1: Change Detection
+cd model_1
+python run_change_detection.py --demo    # Usa immagini del progetto
+# oppure
+python simple_example.py                  # Training con dati sintetici
 ```
 
 This model needs:
 - Paired images from two time periods (before/after)
-- GPU recommended for training
-- 10-20 minutes for training
+- Works on CPU (versione leggera) or GPU (versione CNN)
+- Results in seconds (demo) or 10-20 minutes (training)
 
 ### Option 2: I want risk assessment (area prioritization)
 
 ```bash
 # Use Model 2: Forest Pattern Classifier
-python simple_forest_example.py
+cd model_2
+python run_forest_classifier.py --demo   # Usa immagini del progetto
+# oppure
+python simple_forest_example.py           # Training con dati sintetici
 ```
 
 This model needs:
-- Single NDVI image (one time period)
+- Single image (one time period)
 - Works great on CPU
 - 1-2 minutes for training
 
